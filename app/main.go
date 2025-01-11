@@ -6,12 +6,13 @@ import (
 	"log/slog"
 	"os"
 	//	"github.com/k0kubun/pp"
-	//	"github.com/k0kubun/pp"
+	//	"github.com/google/uuid"
 )
 
 // global variables
 var applog *slog.Logger
-var dbs Databases
+
+//var dbs Databases
 
 // we use init function to setup logging :P
 // default log file: application.log
@@ -29,28 +30,21 @@ func init() {
 // main function
 func main() {
 	// first some welcome (and defered goodbye :P)
-	applog.Info("Application starting up from binary %s...", os.Args[0])
+	applog.Info(fmt.Sprintf("Application starting up from binary %s...", os.Args[0]))
 
 	// read configuration
 	config, err := ReadConfig("config.json")
 	if err != nil {
-		applog.Error("Fatal error: %v", err)
+		applog.Error(fmt.Sprintf("Fatal error: %v", err))
 		panic(err)
 	}
-
-	// construct DSN for databases and connect to databases -> save connections to global dbs var
-	//redisDSN := fmt.Sprintf("redis://%s:%s@%s:%d/%d", config.Redis.Username, config.Redis.Password, config.Redis.Host, config.Redis.Port, config.Redis.DBIndex)
-	//siriDSN := fmt.Sprintf("siridb://%s:%s@%s:%d/%s", config.SiriDB.Username, config.SiriDB.Password, config.SiriDB.Host, config.SiriDB.Port, config.SiriDB.DBName)
-	mongoDSN := MongoDBCreateDSN(config.Mongo.Username, config.Mongo.Password, config.Mongo.Host, config.Mongo.Port, config.Mongo.DBName)
-
-	applog.Info("Connecting to mongodb backend database...")
-	dbs.Mongo, err = NewMongoConnection(mongoDSN)
+	applog.Info("Starting up database connections...")
+	dbs, err := NewDBConnections(applog, config)
 	if err != nil {
-		errstr := fmt.Sprintf("Error on connection to mongodb: %v", err)
-		applog.Error(errstr)
+		applog.Error(fmt.Sprintf("Error on establishing db connections: %v", err))
 		panic(err)
 	}
-	applog.Info("Connection complete...")
+	applog.Debug(fmt.Sprintf("Database connections: %+v", dbs))
 	/*
 		applog.Printf("Connecting to redis database engine...")
 		dbs.Redis, err = NewRedisConnection(redisDSN)
@@ -70,7 +64,7 @@ func main() {
 		applog.Printf("Connection complete")
 	*/
 	// print instances of connections :)
-	applog.Debug("Mongo DB conection instance: %v\n", dbs.Mongo)
+	applog.Debug(fmt.Sprintf("Mongo DB conection instance: %v\n", dbs.Mongo))
 	//pp.Print(dbs.Mongo)
 
 	//applog.Printf("Redis DB connection instance: %v\n", dbs.Redis)
@@ -80,7 +74,7 @@ func main() {
 	//pp.Print(dbs.Siri)
 
 	// end of main
-	applog.Info("Application binary %s ending...", os.Args[0])
+	applog.Info(fmt.Sprintf("Application binary %s ending...", os.Args[0]))
 
 	// close connections to db
 	//defer dbs.Redis.Close()

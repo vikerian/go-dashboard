@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/SiriDB/go-siridb-connector v1.0.14
-	github.com/google/uuid v1.6.0
 	github.com/kos-v/dsnparser v1.1.0
 	github.com/redis/go-redis/v9 v9.7.0
 	go.mongodb.org/mongo-driver v1.17.1
