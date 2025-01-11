@@ -1,0 +1,44 @@
+{
+    "redis": {
+        "redis_username": "",
+        "redis_password": "",
+        "redis_host": "localhost",
+        "redis_port": 6379,
+        "redis_database_index": 0
+    },
+    "mongo": {
+        "mongo_host": "localhost",
+        "mongo_port": "27017",
+        "mongo_db_name": "appdb",
+        "mongo_db_collection": "appcollection",
+        "mongo_username": "",
+        "mongo_password": ""
+    },
+    "webui": {
+        "web_ip4": "127.0.0.1",
+        "web_name": "Dashboard Application",
+        "web_title": "Home Dashboard",
+        "access": {
+            "access_counter": 1
+        }
+    },
+    "siridb": {
+        "siri_host": "localhost",
+        "siri_port": 9000,
+        "siri_username": "iris",
+        "siri_password": "siri",
+        "siri_db": "vikerdb"
+    },
+    "datasources": [
+        {
+            "datasource_id": 1,
+            "datasource_name": "Magistrat Děčín",
+            "datasource_url": "https://www.mmdecin.cz"
+        },
+        {
+            "datasource_id": 2,
+            "datasource_name": "Magistrat Ústí nad Labem",
+            "datasource_url": "https://www.usti.cz"
+        }
+    ]
+}
